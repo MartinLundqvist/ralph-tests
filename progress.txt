@@ -1,0 +1,1 @@
+Step 1 complete: Installed dependencies (react, react-dom, vite, @vitejs/plugin-react, typescript, @types/react, @types/react-dom).
