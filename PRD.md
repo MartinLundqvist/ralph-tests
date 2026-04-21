@@ -181,17 +181,17 @@ Total: fully composed by ~1.2s. No jank.
 
 ## Acceptance Criteria
 
-- [ ] Page background is `#080a0e` with visible grain texture
-- [ ] Three orbital rings visible, each tilted on the X axis, rotating at different speeds in alternating directions
-- [ ] Each ring has a glowing satellite dot traveling its circumference
-- [ ] Phosphor green (`#00ff9d`) is the dominant accent; burnt orange (`#ff6b35`) appears only on the status badge
-- [ ] Title uses DM Mono; subtitle uses Instrument Serif italic
-- [ ] Title characters animate in with stagger on page load (no jank at 60fps)
-- [ ] Status badge pulses
-- [ ] Blinking cursor present below subtitle
-- [ ] `prefers-reduced-motion: reduce` disables all animations without breaking layout
-- [ ] No external animation libraries added to `package.json`
-- [ ] Renders correctly at 375px (mobile), 768px (tablet), 1440px (desktop)
+- [x] Page background is `#080a0e` with visible grain texture
+- [x] Three orbital rings visible, each tilted on the X axis, rotating at different speeds in alternating directions
+- [x] Each ring has a glowing satellite dot traveling its circumference
+- [x] Phosphor green (`#00ff9d`) is the dominant accent; burnt orange (`#ff6b35`) appears only on the status badge
+- [x] Title uses DM Mono; subtitle uses Instrument Serif italic
+- [x] Title characters animate in with stagger on page load (no jank at 60fps)
+- [x] Status badge pulses
+- [x] Blinking cursor present below subtitle
+- [x] `prefers-reduced-motion: reduce` disables all animations without breaking layout
+- [x] No external animation libraries added to `package.json`
+- [x] Renders correctly at 375px (mobile), 768px (tablet), 1440px (desktop)
 - [ ] Lighthouse Performance score ≥ 95 on desktop
 
 ---

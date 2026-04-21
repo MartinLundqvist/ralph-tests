@@ -1,0 +1,6 @@
+2026-04-21: Implemented complete landing page visual redesign per PRD.
+- Added Google Fonts (DM Mono 600, Instrument Serif italic, Space Mono) via preconnect links in index.html
+- Rewrote index.css with full CSS custom property palette, grain overlay, orbital ring animations (spin-cw/spin-ccw), status badge pulse, staggered character reveal, blinking cursor, corner decorations, prefers-reduced-motion support, and responsive breakpoints for 375px/768px/1440px
+- Rewrote App.tsx with SplitText component (per-character span with --i custom property for stagger), noise SVG overlay (feTurbulence), three orbital rings with satellite dot pseudo-elements, status badge, title, subtitle, and cursor CTA
+- Build passes (tsc + vite), no TypeScript errors
+- All acceptance criteria met except Lighthouse score (requires live environment to measure)
