@@ -3,14 +3,69 @@ import React, { useState, useEffect, useRef } from 'react'
 type Page = 'home' | 'loop'
 
 const STEPS = [
-  { abbr: 'READ', full: 'Read'  },
-  { abbr: 'PLAN', full: 'Plan'  },
-  { abbr: 'CODE', full: 'Code'  },
-  { abbr: 'TEST', full: 'Test'  },
-  { abbr: 'SAVE', full: 'Save'  },
-  { abbr: 'LOG',  full: 'Log'   },
-  { abbr: 'CHK',  full: 'Check' },
-  { abbr: 'LOOP', full: 'Loop'  },
+  {
+    abbr: 'READ', full: 'Read',
+    desc: 'Ingests the task brief, environment state, and tool manifests into context. Loads all working-tree files referenced by the objective.',
+    code: 'ralph read --dir . --task task.json',
+  },
+  {
+    abbr: 'PLAN', full: 'Plan',
+    desc: 'Decomposes the objective into a sequenced, dependency-resolved action graph. Assigns tools and estimates token cost per sub-step.',
+    code: 'ralph plan --goal "ship feature" --emit plan.md',
+  },
+  {
+    abbr: 'CODE', full: 'Code',
+    desc: 'Writes, edits, and deletes source files to fulfil the current plan node. Invokes read, write, and bash tools as required.',
+    code: 'ralph code --plan plan.md --apply',
+  },
+  {
+    abbr: 'TEST', full: 'Test',
+    desc: 'Executes the configured test runner and captures stdout, stderr, and exit code. Retries failing assertions up to the set limit.',
+    code: 'ralph test --run "npm test" --retry 3',
+  },
+  {
+    abbr: 'SAVE', full: 'Save',
+    desc: 'Commits changed files to the working tree at the current HEAD. Stages only modified paths; never touches untracked work.',
+    code: 'ralph save --files "*.ts" --msg "feat: step impl"',
+  },
+  {
+    abbr: 'LOG',  full: 'Log',
+    desc: 'Appends a structured trace entry to the persistent agent journal. Records step outcome, wall-clock duration, and token spend.',
+    code: 'ralph log --step 6 --status ok --tokens 1240',
+  },
+  {
+    abbr: 'CHK',  full: 'Check',
+    desc: 'Evaluates the exit condition against the current working-tree state. Routes back to LOOP if unmet, or terminates the run if done.',
+    code: 'ralph check --exit-condition "all tests green"',
+  },
+  {
+    abbr: 'LOOP', full: 'Loop',
+    desc: 'Resets the iteration counter and re-enters the cycle at READ. Carries forward all persistent state from the completed cycle.',
+    code: 'ralph loop --next read --carry-state session.json',
+  },
+]
+
+const RUNTIME_CONTEXT = [
+  {
+    label: 'SANDBOX',
+    value: 'docker/0x17f3a2',
+    detail: 'Isolated container with read/write access to the working tree. No network egress without explicit flag.',
+  },
+  {
+    label: 'SIGNAL',
+    value: 'NOMINAL',
+    detail: 'Current signal received from the host environment. Escalates to ABORT on unrecoverable tool error.',
+  },
+  {
+    label: 'STATE',
+    value: 'session.json',
+    detail: 'Persistent JSON blob written after every LOG step. Survives restarts and carries context forward.',
+  },
+  {
+    label: 'ITERATIONS',
+    value: '∞ / BOUNDED',
+    detail: 'Loops until the exit condition is met or the iteration ceiling is reached. Default ceiling: 20.',
+  },
 ]
 
 const ORBIT_R = 152
@@ -257,6 +312,47 @@ function LoopDiagram({ onActiveStepChange }: LoopDiagramProps) {
   )
 }
 
+interface StepGridProps {
+  activeStep: number
+}
+
+function StepGrid({ activeStep }: StepGridProps) {
+  return (
+    <section className="step-grid-section">
+      <div className="step-grid">
+        {STEPS.map((step, i) => (
+          <div key={i} className={`step-card${i === activeStep ? ' step-card-active' : ''}`}>
+            <span className="step-card-num">{String(i + 1).padStart(2, '0')}</span>
+            <span className="step-card-name">{step.full.toUpperCase()}</span>
+            <p className="step-card-desc">{step.desc}</p>
+            <pre className="step-card-code"><code>{step.code}</code></pre>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function RuntimeContext() {
+  return (
+    <section className="runtime-section">
+      <div className="runtime-heading">
+        <span>RUNTIME CONTEXT</span>
+        <div className="runtime-divider" aria-hidden="true" />
+      </div>
+      <div className="runtime-grid">
+        {RUNTIME_CONTEXT.map((item) => (
+          <div key={item.label} className="runtime-card">
+            <span className="runtime-label">{item.label}</span>
+            <span className="runtime-value">{item.value}</span>
+            <p className="runtime-detail">{item.detail}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 interface LoopPageProps {
   onNavigate: () => void
   exiting: boolean
@@ -264,6 +360,12 @@ interface LoopPageProps {
 
 function LoopPage({ onNavigate, exiting }: LoopPageProps) {
   const [activeStep, setActiveStep] = useState(0)
+
+  useEffect(() => {
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'auto'
+    return () => { document.body.style.overflow = prev }
+  }, [])
 
   return (
     <div className={`loop-page${exiting ? ' page-exit' : ''}`} data-active-step={activeStep}>
@@ -278,6 +380,9 @@ function LoopPage({ onNavigate, exiting }: LoopPageProps) {
         <p className="loop-subtitle">the persistent cognition cycle</p>
         <LoopDiagram onActiveStepChange={setActiveStep} />
       </section>
+
+      <StepGrid activeStep={activeStep} />
+      <RuntimeContext />
 
       <footer className="loop-footer">
         ▸ ralph-loop<span className="blink-cursor">_</span>

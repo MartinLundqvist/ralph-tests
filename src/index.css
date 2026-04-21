@@ -408,12 +408,10 @@ main {
 
 /* Loop hero */
 .loop-hero {
-  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 80px 32px;
+  padding: 64px 32px 48px;
   text-align: center;
   gap: 1.5rem;
 }
@@ -526,4 +524,171 @@ main {
 
 .loop-step-name {
   color: var(--phosphor);
+}
+
+/* Step grid section */
+.step-grid-section {
+  padding: 0 32px 64px;
+  max-width: 960px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.step-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.step-card {
+  background: var(--bg-surface);
+  border: 1px solid rgba(0, 255, 157, 0.12);
+  border-top: 2px solid rgba(0, 255, 157, 0.15);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: border-top-color 200ms ease, box-shadow 200ms ease;
+}
+
+.step-card-active {
+  border-top-color: var(--phosphor);
+  box-shadow: 0 0 28px rgba(0, 255, 157, 0.08), inset 0 0 40px rgba(0, 255, 157, 0.04);
+}
+
+.step-card-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  opacity: 0.3;
+  line-height: 1;
+  transition: color 200ms ease, opacity 200ms ease;
+}
+
+.step-card-active .step-card-num {
+  color: var(--phosphor);
+  opacity: 0.6;
+}
+
+.step-card-name {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  transition: color 200ms ease;
+}
+
+.step-card-active .step-card-name {
+  color: var(--phosphor);
+}
+
+.step-card-desc {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin-top: 4px;
+}
+
+.step-card-code {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--phosphor);
+  background: rgba(0, 255, 157, 0.04);
+  border-left: 2px solid var(--phosphor);
+  padding: 10px 12px;
+  margin-top: 8px;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.step-card-code code {
+  font-family: inherit;
+}
+
+/* Runtime context section */
+.runtime-section {
+  padding: 0 32px 80px;
+  max-width: 960px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.runtime-heading {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.runtime-divider {
+  flex: 1;
+  height: 1px;
+  background: var(--phosphor-dim);
+}
+
+.runtime-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.runtime-card {
+  background: var(--bg-surface);
+  border: 1px solid rgba(0, 255, 157, 0.12);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.runtime-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--signal);
+}
+
+.runtime-value {
+  font-family: 'Space Mono', monospace;
+  font-size: 1.125rem;
+  color: var(--phosphor);
+  letter-spacing: 0.05em;
+}
+
+.runtime-detail {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin-top: 4px;
+}
+
+/* Responsive — mobile: single-column grids */
+@media (max-width: 480px) {
+  .step-grid,
+  .runtime-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .step-grid-section,
+  .runtime-section {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .loop-hero {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
 }
