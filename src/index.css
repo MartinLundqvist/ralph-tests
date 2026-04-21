@@ -257,6 +257,7 @@ main {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
     transition-duration: 0.01ms !important;
   }
 
@@ -264,7 +265,9 @@ main {
   .status-badge,
   .subtitle,
   .cursor,
-  .bg-bloom {
+  .bg-bloom,
+  .loop-btn,
+  .loop-page {
     opacity: 1;
     transform: none;
   }
@@ -291,6 +294,20 @@ main {
     height: 130px;
     margin-left: -120px;
     margin-top: -65px;
+  }
+
+  .loop-nav {
+    padding: 16px 24px;
+  }
+
+  .loop-hero {
+    padding: 48px 24px 36px;
+  }
+
+  .step-grid-section,
+  .runtime-section {
+    padding-left: 24px;
+    padding-right: 24px;
   }
 }
 
@@ -681,13 +698,16 @@ main {
     grid-template-columns: 1fr;
   }
 
-  .step-grid-section,
-  .runtime-section {
-    padding-left: 20px;
-    padding-right: 20px;
+  .loop-nav {
+    padding: 14px 20px;
   }
 
   .loop-hero {
+    padding: 32px 20px 28px;
+  }
+
+  .step-grid-section,
+  .runtime-section {
     padding-left: 20px;
     padding-right: 20px;
   }
