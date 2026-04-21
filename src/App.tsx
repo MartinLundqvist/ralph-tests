@@ -1,4 +1,10 @@
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+
+type Page = 'home' | 'loop'
+
+function getInitialPage(): Page {
+  return window.location.hash === '#loop' ? 'loop' : 'home'
+}
 
 interface SplitTextProps {
   text: string
@@ -21,9 +27,14 @@ function SplitText({ text }: SplitTextProps) {
   )
 }
 
-export default function App() {
+interface HomePageProps {
+  onNavigate: () => void
+  exiting: boolean
+}
+
+function HomePage({ onNavigate, exiting }: HomePageProps) {
   return (
-    <>
+    <div className={`home-page${exiting ? ' page-exit' : ''}`}>
       <svg className="noise-overlay" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <filter id="noise-filter">
@@ -62,8 +73,81 @@ export default function App() {
           <div className="cursor" aria-hidden="true">
             ▸ <span className="blink-cursor">_</span>
           </div>
+
+          <button className="loop-btn" onClick={onNavigate}>
+            LOOP ARCHITECTURE ↗
+          </button>
         </div>
       </main>
-    </>
+    </div>
+  )
+}
+
+interface LoopPageProps {
+  onNavigate: () => void
+  exiting: boolean
+}
+
+function LoopPage({ onNavigate, exiting }: LoopPageProps) {
+  return (
+    <div className={`loop-page${exiting ? ' page-exit' : ''}`}>
+      <nav className="loop-nav">
+        <button className="loop-nav-home" onClick={onNavigate}>← HOME</button>
+        <span className="loop-nav-wordmark">RALPH</span>
+      </nav>
+
+      <section className="loop-hero">
+        <p className="loop-tag">TECHNICAL ARCHITECTURE</p>
+        <h1 className="loop-heading">THE LOOP</h1>
+        <p className="loop-subtitle">the persistent cognition cycle</p>
+      </section>
+
+      <footer className="loop-footer">
+        ▸ ralph-loop<span className="blink-cursor">_</span>
+      </footer>
+    </div>
+  )
+}
+
+export default function App() {
+  const [page, setPage] = useState<Page>(getInitialPage)
+  const [exiting, setExiting] = useState(false)
+  const navigatingRef = useRef(false)
+
+  useEffect(() => {
+    function handleHashChange() {
+      if (!navigatingRef.current) {
+        setPage(window.location.hash === '#loop' ? 'loop' : 'home')
+      }
+    }
+    window.addEventListener('hashchange', handleHashChange)
+    return () => window.removeEventListener('hashchange', handleHashChange)
+  }, [])
+
+  function navigate(to: Page) {
+    navigatingRef.current = true
+    setExiting(true)
+    setTimeout(() => {
+      window.location.hash = to === 'loop' ? '#loop' : ''
+      setPage(to)
+      setExiting(false)
+      setTimeout(() => { navigatingRef.current = false }, 0)
+    }, 300)
+  }
+
+  if (page === 'loop') {
+    return (
+      <LoopPage
+        onNavigate={() => navigate('home')}
+        exiting={exiting}
+      />
+    )
+  }
+
+  return (
+    <HomePage
+      onNavigate={() => navigate('loop')}
+      exiting={exiting}
+    />
   )
 }
