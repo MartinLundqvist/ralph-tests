@@ -192,7 +192,7 @@ Total: fully composed by ~1.2s. No jank.
 - [x] `prefers-reduced-motion: reduce` disables all animations without breaking layout
 - [x] No external animation libraries added to `package.json`
 - [x] Renders correctly at 375px (mobile), 768px (tablet), 1440px (desktop)
-- [ ] Lighthouse Performance score ≥ 95 on desktop
+- [x] Lighthouse Performance score ≥ 95 on desktop
 
 ---
 

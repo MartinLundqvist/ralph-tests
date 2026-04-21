@@ -31,6 +31,8 @@ body {
   pointer-events: none;
   opacity: 0.04;
   z-index: 1000;
+  transform: translateZ(0);
+  will-change: opacity;
 }
 
 /* Corner decorations */
@@ -93,6 +95,7 @@ main {
   inset: 0;
   pointer-events: none;
   perspective: 800px;
+  contain: layout;
 }
 
 .ring {
@@ -101,6 +104,7 @@ main {
   left: 50%;
   border-radius: 50%;
   border: 1px solid var(--phosphor-dim);
+  will-change: transform;
 }
 
 .ring::after {
