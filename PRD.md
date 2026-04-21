@@ -151,4 +151,4 @@ Add to the existing `package.json`:
 - [x] `pnpm dev` starts the dev server without errors
 - [x] Browser at `localhost:5173` shows "I am Ralph - the agent loop" centered on the page
 - [x] `pnpm build` completes without TypeScript or bundler errors
-- [ ] No console errors or warnings at runtime
+- [x] No console errors or warnings at runtime
