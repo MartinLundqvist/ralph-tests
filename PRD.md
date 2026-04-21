@@ -140,9 +140,15 @@ Add to the existing `package.json`:
 
 ---
 
+## Notes
+
+- Vite downgraded to 5.4.x (from initially installed 8.x) because Vite 8's rolldown bundler crashes with a bus error on linux/arm64 in this environment. Vite 5 uses rollup (pure JS) and works correctly.
+- `esbuild` added to `pnpm.onlyBuiltDependencies` in package.json so its postinstall script runs and downloads the correct platform binary.
+- `src/vite-env.d.ts` added with `/// <reference types="vite/client" />` to resolve CSS side-effect import types.
+
 ## Acceptance Criteria
 
-- [ ] `pnpm dev` starts the dev server without errors
-- [ ] Browser at `localhost:5173` shows "I am Ralph - the agent loop" centered on the page
-- [ ] `pnpm build` completes without TypeScript or bundler errors
+- [x] `pnpm dev` starts the dev server without errors
+- [x] Browser at `localhost:5173` shows "I am Ralph - the agent loop" centered on the page
+- [x] `pnpm build` completes without TypeScript or bundler errors
 - [ ] No console errors or warnings at runtime
