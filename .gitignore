@@ -1,4 +1,28 @@
+# Dependencies
 node_modules/
-dist/
 .pnpm-store/
-ralph-status.json
+
+# Build output
+dist/
+
+# TypeScript incremental build cache
+*.tsbuildinfo
+
+# Vite cache
+.vite/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Editor / IDE
+.cursor/
+.claude/
+
+# AFK script runtime files
+.ralph-context.md
+.ralph-status.json
+
+# macOS
+.DS_Store
