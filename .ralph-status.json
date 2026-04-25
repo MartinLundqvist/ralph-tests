@@ -1,5 +1,5 @@
 {
-  "issue": 17,
+  "issue": 18,
   "status": "complete",
-  "summary": "Differentiated section heading hierarchy: h2.afk-section-heading uses signal orange with border-bottom underline while subsection labels use phosphor green, with .afk-code-block-label letter-spacing tightened from 0.2em to 0.15em."
+  "summary": "Increased .afk-code-blocks gap to 56px and added a left-border accent with padding to .afk-code-block-label, making each KEY COMMANDS entry scannable as a distinct unit."
 }
