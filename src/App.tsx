@@ -477,7 +477,7 @@ function AfkFlowDiagram() {
       {/* START pill */}
       <rect x={200} y={12} width={140} height={28} rx={14} fill={ph} />
       <text x={270} y={31} textAnchor="middle" fontFamily="'Space Mono', monospace"
-        fontSize={11} fontWeight={700} fill={bg}>START</text>
+        fontSize={13} fontWeight={700} fill={bg}>START</text>
 
       {/* Arrow: START → outer loop box */}
       <line x1={270} y1={40} x2={270} y2={57} stroke={phd} strokeWidth={1.5}
@@ -486,37 +486,37 @@ function AfkFlowDiagram() {
       {/* OUTER LOOP dashed box: x=14, y=58, w=498, h=588, right=512, bottom=646 */}
       <rect x={14} y={58} width={498} height={588} fill="none" stroke={phd}
         strokeWidth={1} strokeDasharray="8 4" rx={3} />
-      <text x={20} y={53} fontFamily="'Space Mono', monospace" fontSize={9}
+      <text x={20} y={53} fontFamily="'Space Mono', monospace" fontSize={11}
         letterSpacing="0.2em" fill={ts}>1 .. N iterations</text>
 
       {/* find_next_issue sub-box: x=26, y=68, w=474, h=148 */}
       <rect x={26} y={68} width={474} height={148} fill={phf} stroke={phd}
         strokeWidth={1} rx={3} />
-      <text x={38} y={88} fontFamily="'Space Mono', monospace" fontSize={11}
+      <text x={38} y={88} fontFamily="'Space Mono', monospace" fontSize={13}
         fontWeight={700} fill={ph}>find_next_issue()</text>
-      <text x={52} y={106} fontFamily="'Space Mono', monospace" fontSize={9} fill={ts}>
+      <text x={52} y={106} fontFamily="'Space Mono', monospace" fontSize={11} fill={ts}>
         {'gh issue list --state open --label grindable --json number | sort'}
       </text>
-      <text x={52} y={122} fontFamily="'Space Mono', monospace" fontSize={9} fill={ts}>
+      <text x={52} y={122} fontFamily="'Space Mono', monospace" fontSize={11} fill={ts}>
         {'for each candidate {'}
       </text>
-      <text x={66} y={138} fontFamily="'Space Mono', monospace" fontSize={9} fill={ts}>
+      <text x={66} y={138} fontFamily="'Space Mono', monospace" fontSize={11} fill={ts}>
         {'  parse "Blocked by #N" from body'}
       </text>
-      <text x={66} y={154} fontFamily="'Space Mono', monospace" fontSize={9} fill={ts}>
+      <text x={66} y={154} fontFamily="'Space Mono', monospace" fontSize={11} fill={ts}>
         {'  gh issue view <blocker> --json state'}
       </text>
-      <text x={66} y={170} fontFamily="'Space Mono', monospace" fontSize={9} fill={sig}>
+      <text x={66} y={170} fontFamily="'Space Mono', monospace" fontSize={11} fill={sig}>
         {'  if OPEN → skip (continue)   ·   if exhausted → EXIT 0'}
       </text>
-      <text x={52} y={186} fontFamily="'Space Mono', monospace" fontSize={9} fill={ts}>
+      <text x={52} y={186} fontFamily="'Space Mono', monospace" fontSize={11} fill={ts}>
         {'} → return issue_number'}
       </text>
 
       {/* Arrow: find_next_issue → fetch details */}
       <line x1={270} y1={216} x2={270} y2={234} stroke={phd} strokeWidth={1.5}
         markerEnd="url(#afk-arr)" />
-      <text x={278} y={228} fontFamily="'Space Mono', monospace" fontSize={8} fill={ph}>
+      <text x={278} y={228} fontFamily="'Space Mono', monospace" fontSize={10} fill={ph}>
         issue found
       </text>
 
@@ -524,13 +524,13 @@ function AfkFlowDiagram() {
       <rect x={74} y={236} width={392} height={58} fill={bg} stroke={phd}
         strokeWidth={1} rx={3} />
       <text x={270} y={256} textAnchor="middle" fontFamily="'Space Mono', monospace"
-        fontSize={10} fontWeight={600} fill={tp}>Fetch issue details</text>
+        fontSize={12} fontWeight={600} fill={tp}>Fetch issue details</text>
       <text x={270} y={271} textAnchor="middle" fontFamily="'Space Mono', monospace"
-        fontSize={8.5} fill={ts}>
+        fontSize={11} fill={ts}>
         {'gh issue view N --json title · body · comments'}
       </text>
       <text x={270} y={285} textAnchor="middle" fontFamily="'Space Mono', monospace"
-        fontSize={8.5} fill={ts}>
+        fontSize={11} fill={ts}>
         {'gh issue list --json number,title  (other open issues)'}
       </text>
 
@@ -542,9 +542,9 @@ function AfkFlowDiagram() {
       <rect x={100} y={314} width={340} height={38} fill={bg} stroke={phd}
         strokeWidth={1} rx={3} />
       <text x={270} y={330} textAnchor="middle" fontFamily="'Space Mono', monospace"
-        fontSize={10} fontWeight={600} fill={tp}>write .ralph-context.md</text>
+        fontSize={12} fontWeight={600} fill={tp}>write .ralph-context.md</text>
       <text x={270} y={344} textAnchor="middle" fontFamily="'Space Mono', monospace"
-        fontSize={8.5} fill={ts}>
+        fontSize={11} fill={ts}>
         {'issue title · body · comments · other open issues'}
       </text>
 
@@ -556,9 +556,9 @@ function AfkFlowDiagram() {
       <rect x={74} y={372} width={392} height={50} fill={bg} stroke={phd}
         strokeWidth={1} rx={3} />
       <text x={270} y={390} textAnchor="middle" fontFamily="'Space Mono', monospace"
-        fontSize={10} fontWeight={600} fill={tp}>init .ralph-status.json</text>
+        fontSize={12} fontWeight={600} fill={tp}>init .ralph-status.json</text>
       <text x={270} y={406} textAnchor="middle" fontFamily="'Space Mono', monospace"
-        fontSize={8.5} fill={ts}>
+        fontSize={11} fill={ts}>
         {'{ "issue": N, "status": "in_progress", "summary": null }'}
       </text>
 
@@ -570,13 +570,13 @@ function AfkFlowDiagram() {
       <rect x={26} y={442} width={474} height={56} fill={phf} stroke={ph}
         strokeWidth={1.5} rx={3} />
       <text x={270} y={460} textAnchor="middle" fontFamily="'Space Mono', monospace"
-        fontSize={10} fontWeight={700} fill={ph}>docker sandbox run claude --</text>
+        fontSize={12} fontWeight={700} fill={ph}>docker sandbox run claude --</text>
       <text x={270} y={476} textAnchor="middle" fontFamily="'Space Mono', monospace"
-        fontSize={8.5} fill={ts}>
+        fontSize={11} fill={ts}>
         {'--permission-mode acceptEdits -p "@.ralph-context.md [instructions]"'}
       </text>
       <text x={270} y={490} textAnchor="middle" fontFamily="'Space Mono', monospace"
-        fontSize={8.5} fill={ts}>
+        fontSize={11} fill={ts}>
         {'↳ agent implements issue, writes results back to .ralph-status.json'}
       </text>
 
@@ -589,23 +589,23 @@ function AfkFlowDiagram() {
       <polygon points="270,512 354,538 270,564 186,538"
         fill={bg} stroke={sig} strokeWidth={1.5} />
       <text x={270} y={534} textAnchor="middle" fontFamily="'Space Mono', monospace"
-        fontSize={8.5} fill={tp}>{'status == "complete"'}</text>
+        fontSize={11} fill={tp}>{'status == "complete"'}</text>
       <text x={270} y={548} textAnchor="middle" fontFamily="'Space Mono', monospace"
-        fontSize={8.5} fill={tp}>{'&& issue == N ?'}</text>
+        fontSize={11} fill={tp}>{'&& issue == N ?'}</text>
 
       {/* YES branch: right from diamond */}
       <line x1={354} y1={538} x2={424} y2={538} stroke={sig} strokeWidth={1.5}
         markerEnd="url(#afk-arr-sig)" />
       <text x={386} y={532} textAnchor="middle" fontFamily="'Space Mono', monospace"
-        fontSize={8} fill={sig}>YES</text>
+        fontSize={10} fill={sig}>YES</text>
 
       {/* gh comment + close box */}
       <rect x={426} y={524} width={86} height={28} fill={bg} stroke={sig}
         strokeWidth={1} rx={3} />
       <text x={469} y={535} textAnchor="middle" fontFamily="'Space Mono', monospace"
-        fontSize={8} fill={sig}>gh comment</text>
+        fontSize={10} fill={sig}>gh comment</text>
       <text x={469} y={547} textAnchor="middle" fontFamily="'Space Mono', monospace"
-        fontSize={8} fill={sig}>+ gh close</text>
+        fontSize={10} fill={sig}>+ gh close</text>
 
       {/* YES path after close → down to y=606, left to merge with NO */}
       <path d="M 469 552 L 469 606 L 274 606"
@@ -614,11 +614,11 @@ function AfkFlowDiagram() {
       {/* NO branch: down from diamond */}
       <line x1={270} y1={564} x2={270} y2={606} stroke={phd} strokeWidth={1.5}
         markerEnd="url(#afk-arr)" />
-      <text x={248} y={588} fontFamily="'Space Mono', monospace" fontSize={8} fill={ts}>NO</text>
+      <text x={248} y={588} fontFamily="'Space Mono', monospace" fontSize={10} fill={ts}>NO</text>
 
       {/* "next iteration" label */}
       <text x={148} y={621} textAnchor="middle" fontFamily="'Space Mono', monospace"
-        fontSize={8} fill={ts}>{'↺ next iteration'}</text>
+        fontSize={10} fill={ts}>{'↺ next iteration'}</text>
 
       {/* Loop-back: left side up to find_next_issue */}
       <path d="M 270 606 L 26 606 L 26 88 L 28 88"
@@ -629,7 +629,7 @@ function AfkFlowDiagram() {
       <path d="M 512 68 Q 526 360 512 646"
         fill="none" stroke={sig} strokeWidth={1} strokeDasharray="4 3" />
       <text x={528} y={360} textAnchor="middle" fontFamily="'Space Mono', monospace"
-        fontSize={8} fill={sig} transform="rotate(90,528,360)">trap cleanup EXIT</text>
+        fontSize={10} fill={sig} transform="rotate(90,528,360)">trap cleanup EXIT</text>
       <line x1={512} y1={646} x2={512} y2={656} stroke={sig} strokeWidth={1}
         markerEnd="url(#afk-arr-sig)" />
 
@@ -637,9 +637,9 @@ function AfkFlowDiagram() {
       <rect x={26} y={658} width={474} height={36} fill="none" stroke={sig}
         strokeWidth={1} strokeDasharray="4 3" rx={3} />
       <text x={270} y={673} textAnchor="middle" fontFamily="'Space Mono', monospace"
-        fontSize={9} fontWeight={600} fill={sig}>cleanup</text>
+        fontSize={11} fontWeight={600} fill={sig}>cleanup</text>
       <text x={270} y={687} textAnchor="middle" fontFamily="'Space Mono', monospace"
-        fontSize={8.5} fill={ts}>
+        fontSize={11} fill={ts}>
         {'rm .ralph-context.md  ·  rm .ralph-status.json'}
       </text>
     </svg>
@@ -866,7 +866,7 @@ PY
                 </tr>
                 <tr>
                   <td><code>.ralph-status.json</code></td>
-                  <td>afk-ralph.sh (init) · claude agent (update on finish)</td>
+                  <td>afk-ralph.sh (init)<br />claude agent (update on finish)</td>
                   <td>afk-ralph.sh (post-run status check)</td>
                   <td>trap cleanup EXIT</td>
                 </tr>

@@ -1,5 +1,5 @@
 {
-  "issue": 18,
+  "issue": 19,
   "status": "complete",
-  "summary": "Increased .afk-code-blocks gap to 56px and added a left-border accent with padding to .afk-code-block-label, making each KEY COMMANDS entry scannable as a distinct unit."
+  "summary": "Scaled all AfkFlowDiagram SVG font sizes up ~25% (8→10, 8.5/9→11, 10→12, 11→13), increased .afk-data-flow-table td padding from 10px to 14px, and split the multi-actor Written-by cell onto two lines with <br />."
 }
