@@ -814,7 +814,7 @@ main {
 .afk-code-block-label {
   font-family: 'Space Mono', monospace;
   font-size: 12px;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--phosphor);
   margin-bottom: 6px;
