@@ -1,5 +1,5 @@
 {
-  "issue": 14,
+  "issue": 15,
   "status": "complete",
-  "summary": "Increased font sizes on the AFK page for all seven targeted CSS classes (afk-section-heading, afk-code-pre, afk-api-call, afk-api-phase-label, afk-code-block-label, afk-data-flow-table, and afk-data-flow-table th) from their original 9–10.5px values to the specified 10–12.5px targets, with CSS-only changes and no JSX modifications."
+  "summary": "Replaced white-space: nowrap / overflow-x: auto on .afk-api-call with white-space: pre-wrap / overflow-wrap: anywhere so long gh commands wrap naturally at any viewport width without per-line scroll containers."
 }

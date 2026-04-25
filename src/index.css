@@ -801,8 +801,8 @@ main {
   border: 1px solid var(--phosphor-dim);
   border-left: 2px solid var(--phosphor-dim);
   padding: 6px 10px;
-  overflow-x: auto;
-  white-space: nowrap;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 .afk-code-blocks {
