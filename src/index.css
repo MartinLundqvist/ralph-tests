@@ -267,7 +267,8 @@ main {
   .cursor,
   .bg-bloom,
   .loop-btn,
-  .loop-page {
+  .loop-page,
+  .afk-page {
     opacity: 1;
     transform: none;
   }
@@ -352,7 +353,8 @@ main {
 }
 
 .home-page.page-exit,
-.loop-page.page-exit {
+.loop-page.page-exit,
+.afk-page.page-exit {
   animation: page-exit 300ms ease forwards;
   pointer-events: none;
 }
@@ -719,6 +721,33 @@ main {
   color: var(--text-secondary);
   line-height: 1.65;
   margin-top: 4px;
+}
+
+/* AFK page */
+.afk-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  animation: page-enter 400ms ease both;
+}
+
+.afk-main {
+  flex: 1;
+  max-width: 960px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 48px 32px;
+}
+
+.afk-placeholder {
+  min-height: 200px;
+}
+
+/* CTA linking Loop page to AFK Script page */
+.loop-afk-cta {
+  display: flex;
+  justify-content: center;
+  padding: 16px 32px 48px;
 }
 
 /* Responsive — mobile: single-column grids */

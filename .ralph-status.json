@@ -1,5 +1,5 @@
 {
-  "issue": 10,
+  "issue": 11,
   "status": "complete",
-  "summary": "Pause loop diagram animation on hover: the dot and comet trail freeze when the mouse enters the SVG and resume smoothly from the same position on mouse leave, with no jump and no change to the reduced-motion path."
+  "summary": "Scaffolded the #afk route and AfkPage component with nav, hero, placeholder section, and footer; wired hash routing end-to-end; added AFK SCRIPT CTA on the Loop Architecture page."
 }

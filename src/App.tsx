@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 
-type Page = 'home' | 'loop'
+type Page = 'home' | 'loop' | 'afk'
 
 const STEPS = [
   {
@@ -75,7 +75,9 @@ const CY = 240
 const REVOLUTION_MS = 10_000
 
 function getInitialPage(): Page {
-  return window.location.hash === '#loop' ? 'loop' : 'home'
+  if (window.location.hash === '#loop') return 'loop'
+  if (window.location.hash === '#afk') return 'afk'
+  return 'home'
 }
 
 interface SplitTextProps {
@@ -393,10 +395,11 @@ function RuntimeContext() {
 
 interface LoopPageProps {
   onNavigate: () => void
+  onNavigateAfk: () => void
   exiting: boolean
 }
 
-function LoopPage({ onNavigate, exiting }: LoopPageProps) {
+function LoopPage({ onNavigate, onNavigateAfk, exiting }: LoopPageProps) {
   const [activeStep, setActiveStep] = useState(0)
 
   useEffect(() => {
@@ -422,8 +425,52 @@ function LoopPage({ onNavigate, exiting }: LoopPageProps) {
       <StepGrid activeStep={activeStep} />
       <RuntimeContext />
 
+      <div className="loop-afk-cta">
+        <button className="loop-btn" onClick={onNavigateAfk}>
+          AFK SCRIPT ↗
+        </button>
+      </div>
+
       <footer className="loop-footer">
         ▸ ralph-loop<span className="blink-cursor">_</span>
+      </footer>
+    </div>
+  )
+}
+
+interface AfkPageProps {
+  onNavigate: () => void
+  exiting: boolean
+}
+
+function AfkPage({ onNavigate, exiting }: AfkPageProps) {
+  useEffect(() => {
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'auto'
+    return () => { document.body.style.overflow = prev }
+  }, [])
+
+  return (
+    <div className={`afk-page${exiting ? ' page-exit' : ''}`}>
+      <nav className="loop-nav">
+        <button className="loop-nav-home" onClick={onNavigate}>← LOOP</button>
+        <span className="loop-nav-wordmark">RALPH</span>
+      </nav>
+
+      <section className="loop-hero">
+        <p className="loop-tag">AUTOMATION</p>
+        <h1 className="loop-heading">AFK SCRIPT</h1>
+        <p className="loop-subtitle">How ralph automates the grind — annotated for engineers</p>
+      </section>
+
+      <main className="afk-main">
+        <section className="afk-placeholder">
+          {/* visualization content — issue #12 */}
+        </section>
+      </main>
+
+      <footer className="loop-footer">
+        ▸ afk-ralph.sh<span className="blink-cursor">_</span>
       </footer>
     </div>
   )
@@ -432,6 +479,7 @@ function LoopPage({ onNavigate, exiting }: LoopPageProps) {
 const PAGE_TITLES: Record<Page, string> = {
   home: 'RALPH',
   loop: 'RALPH — LOOP ARCHITECTURE',
+  afk: 'AFK Script — RALPH',
 }
 
 export default function App() {
@@ -446,7 +494,9 @@ export default function App() {
   useEffect(() => {
     function handleHashChange() {
       if (!navigatingRef.current) {
-        setPage(window.location.hash === '#loop' ? 'loop' : 'home')
+        if (window.location.hash === '#loop') setPage('loop')
+        else if (window.location.hash === '#afk') setPage('afk')
+        else setPage('home')
       }
     }
     window.addEventListener('hashchange', handleHashChange)
@@ -457,7 +507,9 @@ export default function App() {
     navigatingRef.current = true
     setExiting(true)
     setTimeout(() => {
-      window.location.hash = to === 'loop' ? '#loop' : ''
+      if (to === 'loop') window.location.hash = '#loop'
+      else if (to === 'afk') window.location.hash = '#afk'
+      else window.location.hash = ''
       setPage(to)
       setExiting(false)
       setTimeout(() => { navigatingRef.current = false }, 0)
@@ -479,6 +531,16 @@ export default function App() {
     return (
       <LoopPage
         onNavigate={() => navigate('home')}
+        onNavigateAfk={() => navigate('afk')}
+        exiting={exiting}
+      />
+    )
+  }
+
+  if (page === 'afk') {
+    return (
+      <AfkPage
+        onNavigate={() => navigate('loop')}
         exiting={exiting}
       />
     )
