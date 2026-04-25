@@ -1,5 +1,5 @@
 {
-  "issue": 6,
+  "issue": 7,
   "status": "complete",
-  "summary": "Added a LOOP STEPS section heading with a phosphor-dim trailing divider above the step grid, extracted shared .section-heading/.section-divider CSS classes used by both sections for consistent typographic treatment."
+  "summary": "Added phosphor-green :focus-visible focus rings (box-shadow offset technique) to .loop-btn and .loop-nav-home, suppressing the browser default outline so keyboard users get a clear on-brand indicator with no impact on mouse/touch interactions."
 }
