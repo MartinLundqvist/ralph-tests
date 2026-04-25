@@ -753,42 +753,10 @@ function AfkPage({ onNavigate, exiting }: AfkPageProps) {
           </div>
         </section>
 
-        <div className="afk-grid-2col">
-          <section className="afk-section">
-            <h2 className="afk-section-heading">GITHUB API CALLS</h2>
-            <div className="afk-api-phases">
-              <div>
-                <p className="afk-api-phase-label">Issue Discovery</p>
-                <div className="afk-api-calls">
-                  <code className="afk-api-call">gh issue list --state open --label grindable --json number --jq &apos;[.[].number] | sort | .[]&apos;</code>
-                  <code className="afk-api-call">gh issue view &lt;num&gt; --json body --jq &apos;.body&apos;</code>
-                  <code className="afk-api-call">gh issue view &lt;blocker&gt; --json state --jq &apos;.state&apos;</code>
-                </div>
-              </div>
-              <div>
-                <p className="afk-api-phase-label">Context Gathering</p>
-                <div className="afk-api-calls">
-                  <code className="afk-api-call">gh issue view &lt;N&gt; --json title --jq &apos;.title&apos;</code>
-                  <code className="afk-api-call">gh issue view &lt;N&gt; --json body --jq &apos;.body&apos;</code>
-                  <code className="afk-api-call">gh issue view &lt;N&gt; --json comments --jq &apos;[.comments[] | ...]&apos;</code>
-                  <code className="afk-api-call">gh issue list --state open --label grindable --json number,title</code>
-                </div>
-              </div>
-              <div>
-                <p className="afk-api-phase-label">Issue Closure (if complete)</p>
-                <div className="afk-api-calls">
-                  <code className="afk-api-call">gh issue comment &lt;N&gt; --body &quot;$summary&quot;</code>
-                  <code className="afk-api-call">gh issue close &lt;N&gt;</code>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section className="afk-section">
-            <h2 className="afk-section-heading">STATUS STATE MACHINE</h2>
-            <AfkStateMachine />
-          </section>
-        </div>
+        <section className="afk-section">
+          <h2 className="afk-section-heading">STATUS STATE MACHINE</h2>
+          <AfkStateMachine />
+        </section>
 
         <section className="afk-section">
           <h2 className="afk-section-heading">KEY COMMANDS</h2>
@@ -839,6 +807,36 @@ PY
 }`}</code></pre>
             </div>
 
+          </div>
+        </section>
+
+        <section className="afk-section">
+          <h2 className="afk-section-heading">GITHUB API CALLS</h2>
+          <div className="afk-api-phases">
+            <div>
+              <p className="afk-api-phase-label">Issue Discovery</p>
+              <div className="afk-api-calls">
+                <code className="afk-api-call">gh issue list --state open --label grindable --json number --jq &apos;[.[].number] | sort | .[]&apos;</code>
+                <code className="afk-api-call">gh issue view &lt;num&gt; --json body --jq &apos;.body&apos;</code>
+                <code className="afk-api-call">gh issue view &lt;blocker&gt; --json state --jq &apos;.state&apos;</code>
+              </div>
+            </div>
+            <div>
+              <p className="afk-api-phase-label">Context Gathering</p>
+              <div className="afk-api-calls">
+                <code className="afk-api-call">gh issue view &lt;N&gt; --json title --jq &apos;.title&apos;</code>
+                <code className="afk-api-call">gh issue view &lt;N&gt; --json body --jq &apos;.body&apos;</code>
+                <code className="afk-api-call">gh issue view &lt;N&gt; --json comments --jq &apos;[.comments[] | ...]&apos;</code>
+                <code className="afk-api-call">gh issue list --state open --label grindable --json number,title</code>
+              </div>
+            </div>
+            <div>
+              <p className="afk-api-phase-label">Issue Closure (if complete)</p>
+              <div className="afk-api-calls">
+                <code className="afk-api-call">gh issue comment &lt;N&gt; --body &quot;$summary&quot;</code>
+                <code className="afk-api-call">gh issue close &lt;N&gt;</code>
+              </div>
+            </div>
           </div>
         </section>
 

@@ -1,0 +1,5 @@
+{
+  "issue": 13,
+  "status": "complete",
+  "summary": "Replaced the two-column afk-grid-2col layout with a sequential single-column flow, reordering sections to: Script Lifecycle → Status State Machine → Key Commands → GitHub API Calls → Data Flow, and removed the afk-grid-2col CSS class entirely."
+}

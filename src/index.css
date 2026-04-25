@@ -771,12 +771,6 @@ main {
   justify-content: center;
 }
 
-.afk-grid-2col {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
-}
-
 .afk-api-phases {
   display: flex;
   flex-direction: column;
@@ -922,12 +916,6 @@ main {
   font-size: 9.5px;
 }
 
-@media (max-width: 768px) {
-  .afk-grid-2col {
-    grid-template-columns: 1fr;
-    gap: 0;
-  }
-}
 
 /* Responsive — mobile: single-column grids */
 @media (max-width: 480px) {
