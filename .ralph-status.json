@@ -1,5 +1,5 @@
 {
-  "issue": 15,
+  "issue": 16,
   "status": "complete",
-  "summary": "Replaced white-space: nowrap / overflow-x: auto on .afk-api-call with white-space: pre-wrap / overflow-wrap: anywhere so long gh commands wrap naturally at any viewport width without per-line scroll containers."
+  "summary": "Split the docker sandbox run claude KEY COMMANDS entry into a shell invocation panel (flags only) and a labelled PROMPT SENT TO AGENT panel showing the 6 numbered instructions as a styled ordered list."
 }

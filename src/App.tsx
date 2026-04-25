@@ -781,13 +781,18 @@ done`}</code></pre>
               <p className="afk-code-block-desc">Launches the Claude agent inside a Docker sandbox with the context file prepended as a @-reference.</p>
               <pre className="afk-code-pre"><code>{`docker sandbox run claude -- \\
   --permission-mode acceptEdits \\
-  -p "@\${CONTEXT_FILE} \\
-  1. Implement every acceptance criterion listed in issue #\${issue_number}. \\
-  2. Run tests and type checks to validate your changes. \\
-  3. Commit your changes with a descriptive message referencing the issue. \\
-  4. Update \${STATUS_FILE} as the final source of truth. \\
-  5. If every criterion is met, set status to complete. \\
-  6. If work is not complete, set status to blocked."`}</code></pre>
+  -p "@\${CONTEXT_FILE} ..."`}</code></pre>
+              <div className="afk-agent-prompt">
+                <p className="afk-agent-prompt-label">PROMPT SENT TO AGENT</p>
+                <ol className="afk-agent-prompt-list">
+                  <li>Implement every acceptance criterion listed in issue #{'${issue_number}'}.</li>
+                  <li>Run tests and type checks to validate your changes.</li>
+                  <li>Commit your changes with a descriptive message referencing the issue.</li>
+                  <li>Update {'${STATUS_FILE}'} as the final source of truth.</li>
+                  <li>If every criterion is met, set status to complete.</li>
+                  <li>If work is not complete, set status to blocked.</li>
+                </ol>
+              </div>
             </div>
 
             <div>
