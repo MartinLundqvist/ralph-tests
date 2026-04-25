@@ -391,10 +391,19 @@ function LoopPage({ onNavigate, exiting }: LoopPageProps) {
   )
 }
 
+const PAGE_TITLES: Record<Page, string> = {
+  home: 'RALPH',
+  loop: 'RALPH — LOOP ARCHITECTURE',
+}
+
 export default function App() {
   const [page, setPage] = useState<Page>(getInitialPage)
   const [exiting, setExiting] = useState(false)
   const navigatingRef = useRef(false)
+
+  useEffect(() => {
+    document.title = PAGE_TITLES[page]
+  }, [page])
 
   useEffect(() => {
     function handleHashChange() {
