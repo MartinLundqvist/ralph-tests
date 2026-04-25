@@ -808,7 +808,7 @@ main {
 .afk-code-blocks {
   display: flex;
   flex-direction: column;
-  gap: 36px;
+  gap: 56px;
 }
 
 .afk-code-block-label {
@@ -818,6 +818,8 @@ main {
   text-transform: uppercase;
   color: var(--phosphor);
   margin-bottom: 6px;
+  border-left: 2px solid var(--signal);
+  padding-left: 8px;
 }
 
 .afk-code-block-desc {
