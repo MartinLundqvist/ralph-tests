@@ -317,6 +317,16 @@ interface StepGridProps {
 }
 
 function StepGrid({ activeStep }: StepGridProps) {
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
+
+  function handleCopy(index: number, code: string) {
+    if (!navigator.clipboard) return
+    navigator.clipboard.writeText(code).then(() => {
+      setCopiedIndex(index)
+      setTimeout(() => setCopiedIndex(null), 1500)
+    }).catch(() => {})
+  }
+
   return (
     <section className="step-grid-section">
       <div className="section-heading">
@@ -329,7 +339,19 @@ function StepGrid({ activeStep }: StepGridProps) {
             <span className="step-card-num">{String(i + 1).padStart(2, '0')}</span>
             <span className="step-card-name">{step.full.toUpperCase()}</span>
             <p className="step-card-desc">{step.desc}</p>
-            <pre className="step-card-code"><code>{step.code}</code></pre>
+            <div
+              className="step-code-wrap"
+              onClick={() => handleCopy(i, step.code)}
+              role="button"
+              tabIndex={0}
+              aria-label={`Copy command: ${step.code}`}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleCopy(i, step.code) }}
+            >
+              <pre className="step-card-code"><code>{step.code}</code></pre>
+              {copiedIndex === i && (
+                <div className="step-copied-overlay" aria-live="polite">COPIED ✓</div>
+              )}
+            </div>
           </div>
         ))}
       </div>
