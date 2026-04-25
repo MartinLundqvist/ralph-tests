@@ -545,7 +545,7 @@ main {
 
 /* Step grid section */
 .step-grid-section {
-  padding: 0 32px 64px;
+  padding: 48px 32px 64px;
   max-width: 960px;
   margin: 0 auto;
   width: 100%;
@@ -634,7 +634,7 @@ main {
   width: 100%;
 }
 
-.runtime-heading {
+.section-heading {
   font-family: 'Space Mono', monospace;
   font-size: 11px;
   letter-spacing: 0.25em;
@@ -646,7 +646,7 @@ main {
   margin-bottom: 24px;
 }
 
-.runtime-divider {
+.section-divider {
   flex: 1;
   height: 1px;
   background: var(--phosphor-dim);

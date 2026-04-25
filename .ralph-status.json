@@ -1,0 +1,5 @@
+{
+  "issue": 6,
+  "status": "complete",
+  "summary": "Added a LOOP STEPS section heading with a phosphor-dim trailing divider above the step grid, extracted shared .section-heading/.section-divider CSS classes used by both sections for consistent typographic treatment."
+}

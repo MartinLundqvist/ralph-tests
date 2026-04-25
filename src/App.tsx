@@ -319,6 +319,10 @@ interface StepGridProps {
 function StepGrid({ activeStep }: StepGridProps) {
   return (
     <section className="step-grid-section">
+      <div className="section-heading">
+        <span>LOOP STEPS</span>
+        <div className="section-divider" aria-hidden="true" />
+      </div>
       <div className="step-grid">
         {STEPS.map((step, i) => (
           <div key={i} className={`step-card${i === activeStep ? ' step-card-active' : ''}`}>
@@ -336,9 +340,9 @@ function StepGrid({ activeStep }: StepGridProps) {
 function RuntimeContext() {
   return (
     <section className="runtime-section">
-      <div className="runtime-heading">
+      <div className="section-heading">
         <span>RUNTIME CONTEXT</span>
-        <div className="runtime-divider" aria-hidden="true" />
+        <div className="section-divider" aria-hidden="true" />
       </div>
       <div className="runtime-grid">
         {RUNTIME_CONTEXT.map((item) => (
