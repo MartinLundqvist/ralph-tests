@@ -1,5 +1,5 @@
 {
-  "issue": 8,
+  "issue": 9,
   "status": "complete",
-  "summary": "Added click-to-copy on step card code blocks: clicking any code block copies the command to the clipboard and shows a COPIED ✓ overlay for 1.5 s, with pointer cursor on hover and graceful no-op if the Clipboard API is unavailable."
+  "summary": "Added global keyboard shortcuts: pressing L on the home page navigates to the loop page, and pressing Escape on the loop page navigates home, both using the existing page-exit animation and ignoring events when an input or textarea is focused."
 }

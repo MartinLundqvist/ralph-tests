@@ -452,6 +452,17 @@ export default function App() {
     }, 300)
   }
 
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      const tag = (event.target as HTMLElement).tagName
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return
+      if (page === 'home' && event.key.toLowerCase() === 'l') navigate('loop')
+      else if (page === 'loop' && event.key === 'Escape') navigate('home')
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [page]) // eslint-disable-line react-hooks/exhaustive-deps
+
   if (page === 'loop') {
     return (
       <LoopPage
