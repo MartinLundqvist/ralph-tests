@@ -1,5 +1,5 @@
 {
-  "issue": 9,
+  "issue": 10,
   "status": "complete",
-  "summary": "Added global keyboard shortcuts: pressing L on the home page navigates to the loop page, and pressing Escape on the loop page navigates home, both using the existing page-exit animation and ignoring events when an input or textarea is focused."
+  "summary": "Pause loop diagram animation on hover: the dot and comet trail freeze when the mouse enters the SVG and resume smoothly from the same position on mouse leave, with no jump and no change to the reduced-motion path."
 }

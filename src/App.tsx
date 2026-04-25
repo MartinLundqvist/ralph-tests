@@ -170,6 +170,8 @@ function LoopDiagram({ onActiveStepChange }: LoopDiagramProps) {
   const rafRef = useRef<number | null>(null)
   const activeNodeRef = useRef(0)
   const onChangeRef = useRef(onActiveStepChange)
+  const pausedRef = useRef(false)
+  const pausedElapsedRef = useRef(0)
 
   useEffect(() => {
     onChangeRef.current = onActiveStepChange
@@ -180,7 +182,15 @@ function LoopDiagram({ onActiveStepChange }: LoopDiagramProps) {
 
     function tick(ts: number) {
       if (startRef.current === null) startRef.current = ts
+
+      if (pausedRef.current) {
+        startRef.current = ts - pausedElapsedRef.current
+        rafRef.current = requestAnimationFrame(tick)
+        return
+      }
+
       const elapsed = ts - startRef.current
+      pausedElapsedRef.current = elapsed
       const progress = (elapsed % REVOLUTION_MS) / REVOLUTION_MS
       const angle = progress * 2 * Math.PI - Math.PI / 2
 
@@ -222,6 +232,8 @@ function LoopDiagram({ onActiveStepChange }: LoopDiagramProps) {
         className="loop-diagram"
         role="img"
         aria-label="Ralph agent loop diagram — animated pulse dot cycles through 8 steps"
+        onMouseEnter={() => { pausedRef.current = true }}
+        onMouseLeave={() => { pausedRef.current = false }}
       >
         {/* Outer decorative ring */}
         <circle cx={CX} cy={CY} r={216} fill="none" stroke="var(--phosphor-dim)" strokeWidth="1" />
