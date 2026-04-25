@@ -757,7 +757,7 @@ main {
 
 .afk-section-heading {
   font-family: 'Space Mono', monospace;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--signal);
@@ -779,7 +779,7 @@ main {
 
 .afk-api-phase-label {
   font-family: 'Space Mono', monospace;
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 0.25em;
   text-transform: uppercase;
   color: var(--phosphor);
@@ -795,7 +795,7 @@ main {
 .afk-api-call {
   display: block;
   font-family: 'Space Mono', monospace;
-  font-size: 9.5px;
+  font-size: 11px;
   color: var(--text-secondary);
   background: var(--bg-surface);
   border: 1px solid var(--phosphor-dim);
@@ -813,7 +813,7 @@ main {
 
 .afk-code-block-label {
   font-family: 'Space Mono', monospace;
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--phosphor);
@@ -836,7 +836,7 @@ main {
   padding: 16px;
   overflow-x: auto;
   font-family: 'Space Mono', monospace;
-  font-size: 10.5px;
+  font-size: 12.5px;
   line-height: 1.8;
   color: var(--text-secondary);
 }
@@ -883,14 +883,14 @@ main {
   width: 100%;
   border-collapse: collapse;
   font-family: 'Space Mono', monospace;
-  font-size: 10px;
+  font-size: 11px;
   min-width: 580px;
 }
 
 .afk-data-flow-table th {
   text-align: left;
   color: var(--phosphor);
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   padding: 6px 16px 6px 0;

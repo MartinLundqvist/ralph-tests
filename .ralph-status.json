@@ -1,5 +1,5 @@
 {
-  "issue": 13,
+  "issue": 14,
   "status": "complete",
-  "summary": "Replaced the two-column afk-grid-2col layout with a sequential single-column flow, reordering sections to: Script Lifecycle → Status State Machine → Key Commands → GitHub API Calls → Data Flow, and removed the afk-grid-2col CSS class entirely."
+  "summary": "Increased font sizes on the AFK page for all seven targeted CSS classes (afk-section-heading, afk-code-pre, afk-api-call, afk-api-phase-label, afk-code-block-label, afk-data-flow-table, and afk-data-flow-table th) from their original 9–10.5px values to the specified 10–12.5px targets, with CSS-only changes and no JSX modifications."
 }
