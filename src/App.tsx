@@ -443,6 +443,287 @@ interface AfkPageProps {
   exiting: boolean
 }
 
+function AfkFlowDiagram() {
+  const ph = '#00ff9d'
+  const phd = '#00ff9d55'
+  const phf = '#00ff9d0d'
+  const bg = '#0d1117'
+  const tp = '#e8f0ec'
+  const ts = '#6b8a7a'
+  const sig = '#ff6b35'
+
+  return (
+    <svg
+      viewBox="0 0 540 710"
+      style={{ width: '100%', maxWidth: '600px', display: 'block', margin: '0 auto' }}
+      aria-label="afk-ralph.sh lifecycle flowchart"
+      role="img"
+    >
+      <defs>
+        <marker id="afk-arr" viewBox="0 0 10 10" refX="9" refY="5"
+          markerWidth="5" markerHeight="5" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill={phd} />
+        </marker>
+        <marker id="afk-arr-sig" viewBox="0 0 10 10" refX="9" refY="5"
+          markerWidth="5" markerHeight="5" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill={sig} />
+        </marker>
+        <marker id="afk-arr-ph" viewBox="0 0 10 10" refX="9" refY="5"
+          markerWidth="5" markerHeight="5" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill={ph} />
+        </marker>
+      </defs>
+
+      {/* START pill */}
+      <rect x={200} y={12} width={140} height={28} rx={14} fill={ph} />
+      <text x={270} y={31} textAnchor="middle" fontFamily="'Space Mono', monospace"
+        fontSize={11} fontWeight={700} fill={bg}>START</text>
+
+      {/* Arrow: START → outer loop box */}
+      <line x1={270} y1={40} x2={270} y2={57} stroke={phd} strokeWidth={1.5}
+        markerEnd="url(#afk-arr)" />
+
+      {/* OUTER LOOP dashed box: x=14, y=58, w=498, h=588, right=512, bottom=646 */}
+      <rect x={14} y={58} width={498} height={588} fill="none" stroke={phd}
+        strokeWidth={1} strokeDasharray="8 4" rx={3} />
+      <text x={20} y={53} fontFamily="'Space Mono', monospace" fontSize={9}
+        letterSpacing="0.2em" fill={ts}>1 .. N iterations</text>
+
+      {/* find_next_issue sub-box: x=26, y=68, w=474, h=148 */}
+      <rect x={26} y={68} width={474} height={148} fill={phf} stroke={phd}
+        strokeWidth={1} rx={3} />
+      <text x={38} y={88} fontFamily="'Space Mono', monospace" fontSize={11}
+        fontWeight={700} fill={ph}>find_next_issue()</text>
+      <text x={52} y={106} fontFamily="'Space Mono', monospace" fontSize={9} fill={ts}>
+        {'gh issue list --state open --label grindable --json number | sort'}
+      </text>
+      <text x={52} y={122} fontFamily="'Space Mono', monospace" fontSize={9} fill={ts}>
+        {'for each candidate {'}
+      </text>
+      <text x={66} y={138} fontFamily="'Space Mono', monospace" fontSize={9} fill={ts}>
+        {'  parse "Blocked by #N" from body'}
+      </text>
+      <text x={66} y={154} fontFamily="'Space Mono', monospace" fontSize={9} fill={ts}>
+        {'  gh issue view <blocker> --json state'}
+      </text>
+      <text x={66} y={170} fontFamily="'Space Mono', monospace" fontSize={9} fill={sig}>
+        {'  if OPEN → skip (continue)   ·   if exhausted → EXIT 0'}
+      </text>
+      <text x={52} y={186} fontFamily="'Space Mono', monospace" fontSize={9} fill={ts}>
+        {'} → return issue_number'}
+      </text>
+
+      {/* Arrow: find_next_issue → fetch details */}
+      <line x1={270} y1={216} x2={270} y2={234} stroke={phd} strokeWidth={1.5}
+        markerEnd="url(#afk-arr)" />
+      <text x={278} y={228} fontFamily="'Space Mono', monospace" fontSize={8} fill={ph}>
+        issue found
+      </text>
+
+      {/* FETCH DETAILS rect: y=236 to 294 */}
+      <rect x={74} y={236} width={392} height={58} fill={bg} stroke={phd}
+        strokeWidth={1} rx={3} />
+      <text x={270} y={256} textAnchor="middle" fontFamily="'Space Mono', monospace"
+        fontSize={10} fontWeight={600} fill={tp}>Fetch issue details</text>
+      <text x={270} y={271} textAnchor="middle" fontFamily="'Space Mono', monospace"
+        fontSize={8.5} fill={ts}>
+        {'gh issue view N --json title · body · comments'}
+      </text>
+      <text x={270} y={285} textAnchor="middle" fontFamily="'Space Mono', monospace"
+        fontSize={8.5} fill={ts}>
+        {'gh issue list --json number,title  (other open issues)'}
+      </text>
+
+      {/* Arrow */}
+      <line x1={270} y1={294} x2={270} y2={312} stroke={phd} strokeWidth={1.5}
+        markerEnd="url(#afk-arr)" />
+
+      {/* WRITE CONTEXT FILE: y=314 to 352 */}
+      <rect x={100} y={314} width={340} height={38} fill={bg} stroke={phd}
+        strokeWidth={1} rx={3} />
+      <text x={270} y={330} textAnchor="middle" fontFamily="'Space Mono', monospace"
+        fontSize={10} fontWeight={600} fill={tp}>write .ralph-context.md</text>
+      <text x={270} y={344} textAnchor="middle" fontFamily="'Space Mono', monospace"
+        fontSize={8.5} fill={ts}>
+        {'issue title · body · comments · other open issues'}
+      </text>
+
+      {/* Arrow */}
+      <line x1={270} y1={352} x2={270} y2={370} stroke={phd} strokeWidth={1.5}
+        markerEnd="url(#afk-arr)" />
+
+      {/* INIT STATUS FILE: y=372 to 422 */}
+      <rect x={74} y={372} width={392} height={50} fill={bg} stroke={phd}
+        strokeWidth={1} rx={3} />
+      <text x={270} y={390} textAnchor="middle" fontFamily="'Space Mono', monospace"
+        fontSize={10} fontWeight={600} fill={tp}>init .ralph-status.json</text>
+      <text x={270} y={406} textAnchor="middle" fontFamily="'Space Mono', monospace"
+        fontSize={8.5} fill={ts}>
+        {'{ "issue": N, "status": "in_progress", "summary": null }'}
+      </text>
+
+      {/* Arrow */}
+      <line x1={270} y1={422} x2={270} y2={440} stroke={phd} strokeWidth={1.5}
+        markerEnd="url(#afk-arr)" />
+
+      {/* DOCKER INVOCATION (highlighted): y=442 to 498 */}
+      <rect x={26} y={442} width={474} height={56} fill={phf} stroke={ph}
+        strokeWidth={1.5} rx={3} />
+      <text x={270} y={460} textAnchor="middle" fontFamily="'Space Mono', monospace"
+        fontSize={10} fontWeight={700} fill={ph}>docker sandbox run claude --</text>
+      <text x={270} y={476} textAnchor="middle" fontFamily="'Space Mono', monospace"
+        fontSize={8.5} fill={ts}>
+        {'--permission-mode acceptEdits -p "@.ralph-context.md [instructions]"'}
+      </text>
+      <text x={270} y={490} textAnchor="middle" fontFamily="'Space Mono', monospace"
+        fontSize={8.5} fill={ts}>
+        {'↳ agent implements issue, writes results back to .ralph-status.json'}
+      </text>
+
+      {/* Arrow */}
+      <line x1={270} y1={498} x2={270} y2={516} stroke={phd} strokeWidth={1.5}
+        markerEnd="url(#afk-arr)" />
+
+      {/* POST-RUN DIAMOND: center (270,538), hw=84, hh=26 */}
+      {/* points: top=512, right=354, bottom=564, left=186 */}
+      <polygon points="270,512 354,538 270,564 186,538"
+        fill={bg} stroke={sig} strokeWidth={1.5} />
+      <text x={270} y={534} textAnchor="middle" fontFamily="'Space Mono', monospace"
+        fontSize={8.5} fill={tp}>{'status == "complete"'}</text>
+      <text x={270} y={548} textAnchor="middle" fontFamily="'Space Mono', monospace"
+        fontSize={8.5} fill={tp}>{'&& issue == N ?'}</text>
+
+      {/* YES branch: right from diamond */}
+      <line x1={354} y1={538} x2={424} y2={538} stroke={sig} strokeWidth={1.5}
+        markerEnd="url(#afk-arr-sig)" />
+      <text x={386} y={532} textAnchor="middle" fontFamily="'Space Mono', monospace"
+        fontSize={8} fill={sig}>YES</text>
+
+      {/* gh comment + close box */}
+      <rect x={426} y={524} width={86} height={28} fill={bg} stroke={sig}
+        strokeWidth={1} rx={3} />
+      <text x={469} y={535} textAnchor="middle" fontFamily="'Space Mono', monospace"
+        fontSize={8} fill={sig}>gh comment</text>
+      <text x={469} y={547} textAnchor="middle" fontFamily="'Space Mono', monospace"
+        fontSize={8} fill={sig}>+ gh close</text>
+
+      {/* YES path after close → down to y=606, left to merge with NO */}
+      <path d="M 469 552 L 469 606 L 274 606"
+        fill="none" stroke={sig} strokeWidth={1} strokeDasharray="4 3" />
+
+      {/* NO branch: down from diamond */}
+      <line x1={270} y1={564} x2={270} y2={606} stroke={phd} strokeWidth={1.5}
+        markerEnd="url(#afk-arr)" />
+      <text x={248} y={588} fontFamily="'Space Mono', monospace" fontSize={8} fill={ts}>NO</text>
+
+      {/* "next iteration" label */}
+      <text x={148} y={621} textAnchor="middle" fontFamily="'Space Mono', monospace"
+        fontSize={8} fill={ts}>{'↺ next iteration'}</text>
+
+      {/* Loop-back: left side up to find_next_issue */}
+      <path d="M 270 606 L 26 606 L 26 88 L 28 88"
+        fill="none" stroke={phd} strokeWidth={1} strokeDasharray="5 3"
+        markerEnd="url(#afk-arr)" />
+
+      {/* Cleanup arc: right side of outer loop box */}
+      <path d="M 512 68 Q 526 360 512 646"
+        fill="none" stroke={sig} strokeWidth={1} strokeDasharray="4 3" />
+      <text x={528} y={360} textAnchor="middle" fontFamily="'Space Mono', monospace"
+        fontSize={8} fill={sig} transform="rotate(90,528,360)">trap cleanup EXIT</text>
+      <line x1={512} y1={646} x2={512} y2={656} stroke={sig} strokeWidth={1}
+        markerEnd="url(#afk-arr-sig)" />
+
+      {/* CLEANUP rect: below outer loop box */}
+      <rect x={26} y={658} width={474} height={36} fill="none" stroke={sig}
+        strokeWidth={1} strokeDasharray="4 3" rx={3} />
+      <text x={270} y={673} textAnchor="middle" fontFamily="'Space Mono', monospace"
+        fontSize={9} fontWeight={600} fill={sig}>cleanup</text>
+      <text x={270} y={687} textAnchor="middle" fontFamily="'Space Mono', monospace"
+        fontSize={8.5} fill={ts}>
+        {'rm .ralph-context.md  ·  rm .ralph-status.json'}
+      </text>
+    </svg>
+  )
+}
+
+function AfkStateMachine() {
+  const ph = '#00ff9d'
+  const phd = '#00ff9d55'
+  const bg = '#0d1117'
+  const tp = '#e8f0ec'
+  const ts = '#6b8a7a'
+  const sig = '#ff6b35'
+
+  return (
+    <div>
+      <svg
+        viewBox="0 0 460 140"
+        style={{ width: '100%', display: 'block', marginBottom: '20px' }}
+        aria-label="Status file state machine diagram"
+        role="img"
+      >
+        <defs>
+          <marker id="sm-arr" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="5" markerHeight="5" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill={phd} />
+          </marker>
+          <marker id="sm-arr-sig" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="5" markerHeight="5" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill={sig} />
+          </marker>
+        </defs>
+
+        {/* in_progress box */}
+        <rect x={150} y={14} width={160} height={40} rx={4} fill={bg}
+          stroke={phd} strokeWidth={1} />
+        <text x={230} y={33} textAnchor="middle" fontFamily="'Space Mono', monospace"
+          fontSize={10} fill={tp}>in_progress</text>
+        <text x={230} y={47} textAnchor="middle" fontFamily="'Space Mono', monospace"
+          fontSize={8} fill={ts}>(initial state)</text>
+
+        {/* Arrow → complete */}
+        <path d="M 310 34 L 360 34 L 360 80"
+          fill="none" stroke={phd} strokeWidth={1} markerEnd="url(#sm-arr)" />
+        <text x={337} y={27} textAnchor="middle" fontFamily="'Space Mono', monospace"
+          fontSize={7.5} fill={ts}>all criteria met</text>
+
+        {/* complete box */}
+        <rect x={280} y={80} width={160} height={36} rx={4} fill={bg}
+          stroke={ph} strokeWidth={1.5} />
+        <text x={360} y={103} textAnchor="middle" fontFamily="'Space Mono', monospace"
+          fontSize={10} fontWeight={600} fill={ph}>complete</text>
+
+        {/* Arrow → blocked */}
+        <path d="M 150 34 L 100 34 L 100 80"
+          fill="none" stroke={sig} strokeWidth={1} markerEnd="url(#sm-arr-sig)" />
+        <text x={122} y={27} textAnchor="middle" fontFamily="'Space Mono', monospace"
+          fontSize={7.5} fill={sig}>can't proceed</text>
+
+        {/* blocked box */}
+        <rect x={20} y={80} width={160} height={36} rx={4} fill={bg}
+          stroke={sig} strokeWidth={1.5} />
+        <text x={100} y={103} textAnchor="middle" fontFamily="'Space Mono', monospace"
+          fontSize={10} fontWeight={600} fill={sig}>blocked</text>
+      </svg>
+
+      <div className="afk-state-json">
+        <div className="afk-state-json-item">
+          <span className="afk-state-json-label">in_progress</span>
+          <pre className="afk-code-pre">{'{ "issue": N, "status": "in_progress", "summary": null }'}</pre>
+        </div>
+        <div className="afk-state-json-item">
+          <span className="afk-state-json-label afk-state-json-label--complete">complete</span>
+          <pre className="afk-code-pre">{'{ "issue": N, "status": "complete", "summary": "one sentence..." }'}</pre>
+        </div>
+        <div className="afk-state-json-item">
+          <span className="afk-state-json-label afk-state-json-label--blocked">blocked</span>
+          <pre className="afk-code-pre">{'{ "issue": N, "status": "blocked", "summary": "reason..." }'}</pre>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function AfkPage({ onNavigate, exiting }: AfkPageProps) {
   useEffect(() => {
     const prev = document.body.style.overflow
@@ -464,9 +745,133 @@ function AfkPage({ onNavigate, exiting }: AfkPageProps) {
       </section>
 
       <main className="afk-main">
-        <section className="afk-placeholder">
-          {/* visualization content — issue #12 */}
+
+        <section className="afk-section">
+          <h2 className="afk-section-heading">SCRIPT LIFECYCLE</h2>
+          <div className="afk-diagram-wrap">
+            <AfkFlowDiagram />
+          </div>
         </section>
+
+        <div className="afk-grid-2col">
+          <section className="afk-section">
+            <h2 className="afk-section-heading">GITHUB API CALLS</h2>
+            <div className="afk-api-phases">
+              <div>
+                <p className="afk-api-phase-label">Issue Discovery</p>
+                <div className="afk-api-calls">
+                  <code className="afk-api-call">gh issue list --state open --label grindable --json number --jq &apos;[.[].number] | sort | .[]&apos;</code>
+                  <code className="afk-api-call">gh issue view &lt;num&gt; --json body --jq &apos;.body&apos;</code>
+                  <code className="afk-api-call">gh issue view &lt;blocker&gt; --json state --jq &apos;.state&apos;</code>
+                </div>
+              </div>
+              <div>
+                <p className="afk-api-phase-label">Context Gathering</p>
+                <div className="afk-api-calls">
+                  <code className="afk-api-call">gh issue view &lt;N&gt; --json title --jq &apos;.title&apos;</code>
+                  <code className="afk-api-call">gh issue view &lt;N&gt; --json body --jq &apos;.body&apos;</code>
+                  <code className="afk-api-call">gh issue view &lt;N&gt; --json comments --jq &apos;[.comments[] | ...]&apos;</code>
+                  <code className="afk-api-call">gh issue list --state open --label grindable --json number,title</code>
+                </div>
+              </div>
+              <div>
+                <p className="afk-api-phase-label">Issue Closure (if complete)</p>
+                <div className="afk-api-calls">
+                  <code className="afk-api-call">gh issue comment &lt;N&gt; --body &quot;$summary&quot;</code>
+                  <code className="afk-api-call">gh issue close &lt;N&gt;</code>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="afk-section">
+            <h2 className="afk-section-heading">STATUS STATE MACHINE</h2>
+            <AfkStateMachine />
+          </section>
+        </div>
+
+        <section className="afk-section">
+          <h2 className="afk-section-heading">KEY COMMANDS</h2>
+          <div className="afk-code-blocks">
+
+            <div>
+              <p className="afk-code-block-label">find_next_issue — blocker check loop</p>
+              <p className="afk-code-block-desc">Iterates candidates in ascending order and skips any with an open GitHub blocker.</p>
+              <pre className="afk-code-pre"><code>{`for blocker in $(grep -oE 'Blocked by #[0-9]+' \\
+    <<< "$body" | grep -oE '[0-9]+'); do
+  state=$(gh issue view "$blocker" \\
+    --json state --jq '.state')
+  if [ "$state" = "OPEN" ]; then
+    blocked=true
+    break
+  fi
+done`}</code></pre>
+            </div>
+
+            <div>
+              <p className="afk-code-block-label">docker sandbox run claude — agent invocation</p>
+              <p className="afk-code-block-desc">Launches the Claude agent inside a Docker sandbox with the context file prepended as a @-reference.</p>
+              <pre className="afk-code-pre"><code>{`docker sandbox run claude -- \\
+  --permission-mode acceptEdits \\
+  -p "@\${CONTEXT_FILE} \\
+  1. Implement every acceptance criterion listed in issue #\${issue_number}. \\
+  2. Run tests and type checks to validate your changes. \\
+  3. Commit your changes with a descriptive message referencing the issue. \\
+  4. Update \${STATUS_FILE} as the final source of truth. \\
+  5. If every criterion is met, set status to complete. \\
+  6. If work is not complete, set status to blocked."`}</code></pre>
+            </div>
+
+            <div>
+              <p className="afk-code-block-label">read_status_field — Python JSON reader</p>
+              <p className="afk-code-block-desc">Safely extracts a single field from .ralph-status.json; returns an empty string on a missing file or null value.</p>
+              <pre className="afk-code-pre"><code>{`read_status_field() {
+  python3 - "$STATUS_FILE" "$1" <<'PY'
+import json, sys
+try:
+    with open(sys.argv[1]) as f:
+        data = json.load(f)
+except Exception:
+    sys.exit(0)
+value = data.get(sys.argv[2], "")
+print("" if value is None else value)
+PY
+}`}</code></pre>
+            </div>
+
+          </div>
+        </section>
+
+        <section className="afk-section">
+          <h2 className="afk-section-heading">DATA FLOW</h2>
+          <div className="afk-data-flow-wrap">
+            <table className="afk-data-flow-table">
+              <thead>
+                <tr>
+                  <th>File</th>
+                  <th>Written by</th>
+                  <th>Read by</th>
+                  <th>Deleted by</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>.ralph-context.md</code></td>
+                  <td>afk-ralph.sh (each iteration)</td>
+                  <td>claude agent (via @-reference in prompt)</td>
+                  <td>trap cleanup EXIT</td>
+                </tr>
+                <tr>
+                  <td><code>.ralph-status.json</code></td>
+                  <td>afk-ralph.sh (init) · claude agent (update on finish)</td>
+                  <td>afk-ralph.sh (post-run status check)</td>
+                  <td>trap cleanup EXIT</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
       </main>
 
       <footer className="loop-footer">

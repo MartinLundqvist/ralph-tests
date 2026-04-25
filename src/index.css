@@ -750,6 +750,185 @@ main {
   padding: 16px 32px 48px;
 }
 
+/* AFK page content sections */
+.afk-section {
+  margin-bottom: 56px;
+}
+
+.afk-section-heading {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--signal);
+  margin-bottom: 24px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--phosphor-dim);
+}
+
+.afk-diagram-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.afk-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+}
+
+.afk-api-phases {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.afk-api-phase-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--phosphor);
+  margin-bottom: 8px;
+}
+
+.afk-api-calls {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.afk-api-call {
+  display: block;
+  font-family: 'Space Mono', monospace;
+  font-size: 9.5px;
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border: 1px solid var(--phosphor-dim);
+  border-left: 2px solid var(--phosphor-dim);
+  padding: 6px 10px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.afk-code-blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.afk-code-block-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--phosphor);
+  margin-bottom: 6px;
+}
+
+.afk-code-block-desc {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+.afk-code-pre {
+  background: var(--bg-surface);
+  border: 1px solid var(--phosphor-dim);
+  border-left: 2px solid var(--phosphor);
+  padding: 16px;
+  overflow-x: auto;
+  font-family: 'Space Mono', monospace;
+  font-size: 10.5px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+.afk-code-pre code {
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.afk-state-json {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.afk-state-json-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.afk-state-json-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.afk-state-json-label--complete {
+  color: var(--phosphor);
+}
+
+.afk-state-json-label--blocked {
+  color: var(--signal);
+}
+
+.afk-data-flow-wrap {
+  overflow-x: auto;
+}
+
+.afk-data-flow-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  min-width: 580px;
+}
+
+.afk-data-flow-table th {
+  text-align: left;
+  color: var(--phosphor);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 6px 16px 6px 0;
+  border-bottom: 1px solid var(--phosphor-dim);
+}
+
+.afk-data-flow-table td {
+  padding: 10px 16px 10px 0;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--phosphor-dim);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.afk-data-flow-table td:first-child {
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.afk-data-flow-table td code {
+  font-family: 'Space Mono', monospace;
+  color: var(--phosphor);
+  font-size: 9.5px;
+}
+
+@media (max-width: 768px) {
+  .afk-grid-2col {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
 /* Responsive — mobile: single-column grids */
 @media (max-width: 480px) {
   .step-grid,
