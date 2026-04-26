@@ -326,12 +326,41 @@ function LoopDiagram({ onActiveStepChange }: LoopDiagramProps) {
   )
 }
 
+function StepGridSkeleton() {
+  return (
+    <section className="step-grid-section">
+      <div className="section-heading">
+        <span>LOOP STEPS</span>
+        <div className="section-divider" aria-hidden="true" />
+      </div>
+      <div className="step-grid">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <div key={i} className="step-card step-card-skeleton" aria-hidden="true">
+            <span className="skeleton-block skeleton-num" />
+            <span className="skeleton-block skeleton-name" />
+            <span className="skeleton-block skeleton-desc" />
+            <span className="skeleton-block skeleton-code" />
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 interface StepGridProps {
   activeStep: number
 }
 
 function StepGrid({ activeStep }: StepGridProps) {
+  const [loaded, setLoaded] = useState(false)
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
+
+  useEffect(() => {
+    const id = setTimeout(() => setLoaded(true), 800)
+    return () => clearTimeout(id)
+  }, [])
+
+  if (!loaded) return <StepGridSkeleton />
 
   function handleCopy(index: number, code: string) {
     if (!navigator.clipboard) return

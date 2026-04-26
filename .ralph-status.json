@@ -1,5 +1,5 @@
 {
-  "issue": 20,
+  "issue": 21,
   "status": "complete",
-  "summary": "Reduced card padding on .step-card and .runtime-card from 24px to 16px for a more compact dashboard layout."
+  "summary": "Added a phosphor-shimmer loading skeleton to the StepGrid list panel that displays 8 placeholder cards with animated shimmer blocks for 800ms before real content fades in."
 }

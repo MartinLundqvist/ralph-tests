@@ -555,6 +555,34 @@ main {
   color: var(--phosphor);
 }
 
+/* Skeleton shimmer for list panel loading state */
+@keyframes skeleton-shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+.step-card-skeleton {
+  pointer-events: none;
+}
+
+.skeleton-block {
+  display: block;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 255, 157, 0.04) 25%,
+    rgba(0, 255, 157, 0.10) 50%,
+    rgba(0, 255, 157, 0.04) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.6s ease-in-out infinite;
+  border-radius: 2px;
+}
+
+.skeleton-num  { height: 2.5rem; width: 2.5rem; }
+.skeleton-name { height: 11px;   width: 60%;    margin-top: 4px; }
+.skeleton-desc { height: 60px;   width: 100%;   margin-top: 8px; }
+.skeleton-code { height: 36px;   width: 100%;   margin-top: 16px; }
+
 /* Step grid section */
 .step-grid-section {
   padding: 48px 32px 64px;
