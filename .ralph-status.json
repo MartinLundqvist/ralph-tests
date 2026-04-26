@@ -1,0 +1,5 @@
+{
+  "issue": 20,
+  "status": "complete",
+  "summary": "Reduced card padding on .step-card and .runtime-card from 24px to 16px for a more compact dashboard layout."
+}
