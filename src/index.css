@@ -573,7 +573,7 @@ main {
   background: var(--bg-surface);
   border: 1px solid rgba(0, 255, 157, 0.12);
   border-top: 2px solid rgba(0, 255, 157, 0.15);
-  padding: 24px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -693,7 +693,7 @@ main {
 .runtime-card {
   background: var(--bg-surface);
   border: 1px solid rgba(0, 255, 157, 0.12);
-  padding: 24px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 8px;
