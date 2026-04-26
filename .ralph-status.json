@@ -1,5 +1,0 @@
-{
-  "issue": 21,
-  "status": "complete",
-  "summary": "Added a phosphor-shimmer loading skeleton to the StepGrid list panel that displays 8 placeholder cards with animated shimmer blocks for 800ms before real content fades in."
-}

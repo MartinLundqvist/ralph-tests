@@ -9,11 +9,55 @@ fi
 N=$1
 CONTEXT_FILE=".ralph-context.md"
 STATUS_FILE=".ralph-status.json"
+TIMEOUT_BIN=$(command -v timeout || command -v gtimeout || true)
+progress_pid=""
 
 cleanup() {
+  trap - EXIT INT TERM
+  if [ -n "$progress_pid" ]; then
+    kill "$progress_pid" 2>/dev/null || true
+    wait "$progress_pid" 2>/dev/null || true
+  fi
   rm -f "$CONTEXT_FILE" "$STATUS_FILE"
 }
+
+handle_termination() {
+  echo ""
+  echo "Terminating agent..."
+  cleanup
+  exit 130
+}
+
 trap cleanup EXIT
+trap handle_termination INT TERM
+
+start_log_progress() {
+  local log_file=$1
+  local line_count
+
+  (
+    while true; do
+      if [ -f "$log_file" ]; then
+        line_count=$(wc -l < "$log_file" 2>/dev/null | tr -d ' ')
+      else
+        line_count=0
+      fi
+
+      printf "\rAgent running... log lines: %s" "${line_count:-0}"
+      sleep 2
+    done
+  ) &
+  progress_pid=$!
+}
+
+stop_log_progress() {
+  if [ -n "$progress_pid" ]; then
+    kill "$progress_pid" 2>/dev/null || true
+    wait "$progress_pid" 2>/dev/null || true
+    progress_pid=""
+    printf "\r"
+  fi
+}
 
 # Returns the number of the lowest open "grindable" issue with no open blockers.
 # Exits with code 1 if no such issue exists.
@@ -112,8 +156,10 @@ for ((i = 1; i <= N; i++)); do
 }
 EOF
 
+  log_file="logs/ralph-$(date +%Y%m%d-%H%M%S)-issue-${issue_number}.log"
+  
   echo "Starting agent for issue #${issue_number}..."
-  result=$(docker sandbox run claude -- --permission-mode acceptEdits -p \
+  agent_cmd=(docker sandbox run claude -- --permission-mode acceptEdits --verbose --output-format stream-json -p \
     "@${CONTEXT_FILE} \
     1. Implement every acceptance criterion listed in issue #${issue_number}. \
     2. Run tests and type checks to validate your changes. \
@@ -122,8 +168,29 @@ EOF
     5. If every acceptance criterion is met, set status to complete and summary to one sentence describing what was built. \
     6. If the work is not complete, leave status as in_progress or set it to blocked, and explain the reason in summary.")
 
-  echo "$result"
+  : > "$log_file"
+  start_log_progress "$log_file"
 
+  set +e
+  if [ -n "$TIMEOUT_BIN" ]; then
+    "$TIMEOUT_BIN" --foreground --kill-after=10s 900s "${agent_cmd[@]}" > "$log_file" 2>&1
+    agent_status=$?
+  else
+    echo "Warning: timeout/gtimeout not found; running agent without a 15-minute timeout." >> "$log_file"
+    "${agent_cmd[@]}" >> "$log_file" 2>&1
+    agent_status=$?
+  fi
+  set -e
+
+  stop_log_progress
+  line_count=$(wc -l < "$log_file" 2>/dev/null | tr -d ' ')
+  echo "Agent finished. Log: ${log_file} (${line_count:-0} lines)."
+
+  if [ "$agent_status" -eq 124 ]; then
+    echo "Agent timed out after 15 minutes."
+  fi
+
+  # Read the completion status
   echo "Reading completion status from ${STATUS_FILE}..."
   status=$(read_status_field status)
   status_issue=$(read_status_field issue)

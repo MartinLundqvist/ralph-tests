@@ -24,5 +24,8 @@ dist/
 .ralph-context.md
 .ralph-status.json
 
+# Logs
+logs/
+
 # macOS
 .DS_Store
