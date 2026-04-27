@@ -7,6 +7,7 @@ if [ -z "$1" ]; then
 fi
 
 N=$1
+REPO=$(gh repo view --json nameWithOwner --jq '.nameWithOwner')
 CONTEXT_FILE=".ralph-context.md"
 STATUS_FILE=".ralph-status.json"
 TIMEOUT_BIN=$(command -v timeout || command -v gtimeout || true)
@@ -62,9 +63,16 @@ stop_log_progress() {
 # Returns the number of the lowest open "grindable" issue with no open blockers.
 # Exits with code 1 if no such issue exists.
 find_next_issue() {
-  local numbers
-  numbers=$(gh issue list --state open --label grindable --json number \
-    --jq '[.[].number] | sort | .[]')
+  local owner repo numbers
+  owner=${REPO%%/*}
+  repo=${REPO##*/}
+  numbers=$(gh api graphql -f query="{
+    repository(owner: \"$owner\", name: \"$repo\") {
+      issues(first: 50, states: OPEN, labels: [\"grindable\"]) {
+        nodes { number }
+      }
+    }
+  }" --jq '[.data.repository.issues.nodes[].number] | sort | .[]')
 
   [ -z "$numbers" ] && return 1
 
@@ -125,8 +133,13 @@ for ((i = 1; i <= N; i++)); do
   issue_comments=$(gh issue view "$issue_number" --json comments \
     --jq '[.comments[] | "**\(.author.login):** \(.body)"] | join("\n\n")')
 
-  other_issues=$(gh issue list --state open --label grindable --json number,title \
-    --jq "[.[] | select(.number != $issue_number)] | sort_by(.number)[] | \"- #\(.number): \(.title)\"")
+  other_issues=$(gh api graphql -f query="{
+    repository(owner: \"${REPO%%/*}\", name: \"${REPO##*/}\") {
+      issues(first: 50, states: OPEN, labels: [\"grindable\"]) {
+        nodes { number title }
+      }
+    }
+  }" --jq "[.data.repository.issues.nodes[] | select(.number != $issue_number)] | sort_by(.number)[] | \"- #\(.number): \(.title)\"")
 
   echo "Writing context to ${CONTEXT_FILE}..."
   {
