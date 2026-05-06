@@ -1,12 +1,19 @@
 #!/bin/bash
 set -e
 
-if [ -z "$1" ]; then
-  echo "Usage: $0 <iterations>"
+if [ -z "$1" ] || [ -z "$2" ]; then
+  echo "Usage: $0 <sandbox-name> <iterations>"
   exit 1
 fi
 
-N=$1
+SANDBOX_NAME=$1
+N=$2
+
+if ! [[ "$N" =~ ^[0-9]+$ ]] || [ "$N" -lt 1 ]; then
+  echo "Error: iterations must be a positive integer."
+  echo "Usage: $0 <sandbox-name> <iterations>"
+  exit 1
+fi
 REPO=$(gh repo view --json nameWithOwner --jq '.nameWithOwner')
 CONTEXT_FILE=".ralph-context.md"
 STATUS_FILE=".ralph-status.json"
@@ -141,6 +148,19 @@ for ((i = 1; i <= N; i++)); do
     }
   }" --jq "[.data.repository.issues.nodes[] | select(.number != $issue_number)] | sort_by(.number)[] | \"- #\(.number): \(.title)\"")
 
+  # If a prior iteration of this script worked on the same issue but did not
+  # complete (e.g. it was killed by the per-iteration timeout), preserve its
+  # summary so the next agent can continue instead of starting over cold.
+  previous_status=""
+  previous_summary=""
+  if [ -f "$STATUS_FILE" ]; then
+    prev_issue=$(read_status_field issue)
+    if [ "$prev_issue" = "$issue_number" ]; then
+      previous_status=$(read_status_field status)
+      previous_summary=$(read_status_field summary)
+    fi
+  fi
+
   echo "Writing context to ${CONTEXT_FILE}..."
   {
     echo "# Issue #${issue_number}: ${issue_title}"
@@ -152,6 +172,18 @@ for ((i = 1; i <= N; i++)); do
       echo ""
       echo "${issue_comments}"
     fi
+    if [ -n "$previous_summary" ] && [ "$previous_status" != "complete" ]; then
+      echo ""
+      echo "---"
+      echo ""
+      echo "## Continuing from a prior iteration"
+      echo ""
+      echo "A previous agent run on this same issue was cut off before reporting completion (most likely by the per-iteration timeout). Its last checkpoint summary was:"
+      echo ""
+      echo "> ${previous_summary}"
+      echo ""
+      echo "Before doing anything else, run \`git status\` and \`git diff --stat HEAD\` to see what is already on disk, and continue from where the prior work left off rather than restarting from scratch."
+    fi
     echo ""
     echo "---"
     echo ""
@@ -161,25 +193,37 @@ for ((i = 1; i <= N; i++)); do
   } > "$CONTEXT_FILE"
 
   echo "Initializing status file ${STATUS_FILE}..."
-  cat > "$STATUS_FILE" <<EOF
-{
-  "issue": $issue_number,
-  "status": "in_progress",
-  "summary": null
-}
-EOF
+  python3 - "$issue_number" "$previous_summary" > "$STATUS_FILE" <<'PY'
+import json, sys
+issue = int(sys.argv[1])
+summary = sys.argv[2] or None
+print(json.dumps({"issue": issue, "status": "in_progress", "summary": summary}, indent=2))
+PY
 
+  mkdir -p logs
   log_file="logs/ralph-$(date +%Y%m%d-%H%M%S)-issue-${issue_number}.log"
   
   echo "Starting agent for issue #${issue_number}..."
-  agent_cmd=(docker sandbox run claude -- --permission-mode acceptEdits --verbose --output-format stream-json -p \
+  # Old launcher (kept for reference; switch back here if `sbx` is unavailable):
+  # agent_cmd=(docker sandbox run claude -- --permission-mode acceptEdits --verbose --output-format stream-json -p \
+  # `sbx run [flags] AGENT [-- AGENT_ARGS...]` — `-m 16g` raises the per-sandbox
+  # memory ceiling (the old `docker sandbox` plugin was hard-capped at 4 GB).
+  agent_cmd=(sbx run "$SANDBOX_NAME" -- --permission-mode acceptEdits --verbose --output-format stream-json -p \
     "@${CONTEXT_FILE} \
-    1. Implement every acceptance criterion listed in issue #${issue_number}. \
-    2. Run tests and type checks to validate your changes. \
+    Constraints: \
+    - You have a hard 15-minute wall-clock budget. If you exceed it the process is killed mid-flight, your in-memory state is lost, and the next iteration starts cold. Spend the budget on writing and validating, not on broad upfront exploration. \
+    - Do not launch the Explore subagent. Read files directly. Read only what is needed for the next decision; do not pre-read every type, schema, test, and migration before writing. AGENTS.md exists; trust it. \
+    - Do not run recursive \`find\` from the repo root. \
+    - Run the smallest validating test first (single file or \`--test-name-pattern\`). Only run a regression sweep after the targeted test passes, and prefer the project script (\`pnpm test\`, \`uv run pytest tests/ -q\`) over hand-listing test files. \
+    - Do not re-grep the same command output more than once. \
+    - Checkpoint your progress: every time you finish a meaningful chunk (e.g. an acceptance criterion, a passing test run), update ${STATUS_FILE} with a short \`summary\` describing what is on disk and what still remains. This is the only state the next iteration can see if you are killed. \
+    Steps: \
+    1. Implement every acceptance criterion listed in issue #${issue_number}. If the context file mentions a prior iteration, run \`git status\` first and continue from there rather than redoing work. \
+    2. Run tests and type checks to validate your changes — smallest first, regression sweep only if needed. \
     3. Commit your changes with a descriptive message referencing the issue. \
     4. Update ${STATUS_FILE} as the final source of truth. Keep the issue field set to ${issue_number}. \
     5. If every acceptance criterion is met, set status to complete and summary to one sentence describing what was built. \
-    6. If the work is not complete, leave status as in_progress or set it to blocked, and explain the reason in summary.")
+    6. If the work is not complete, leave status as in_progress or set it to blocked, and explain the reason in summary so the next iteration can resume.")
 
   : > "$log_file"
   start_log_progress "$log_file"
